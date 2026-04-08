@@ -130,4 +130,35 @@
         <p>Made with ❤️ (半手搓)JUSDT for YOU </p>
     </footer>
 </body>
+    <audio id="bgm" loop>
+    <source src="music.mp3" type="audio/mpeg">
+    你的浏览器不支持音频播放。
+</audio>
+
+<div id="music-control" style="position: fixed; top: 20px; right: 20px; z-index: 999; cursor: pointer; font-size: 24px;">
+    🎵
+</div>
+
+<script>
+    const bgm = document.getElementById('bgm');
+    const musicBtn = document.getElementById('music-control');
+
+    // 尝试在用户第一次点击页面时播放音乐
+    document.addEventListener('click', function() {
+        if (bgm.paused) {
+            bgm.play();
+        }
+    }, { once: true }); // once: true 表示这个点击监听只执行一次
+
+    // 点击右上角图标可以手动开关
+    musicBtn.addEventListener('click', function() {
+        if (bgm.paused) {
+            bgm.play();
+            musicBtn.innerText = '🎵';
+        } else {
+            bgm.pause();
+            musicBtn.innerText = '🔇';
+        }
+    });
+</script>
 </html>
