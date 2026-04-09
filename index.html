@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>生日快乐！</title>
+    <title>System Status: Active</title>
     <style>
         /* --- 基础样式 --- */
         body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-family: 'Courier New', Courier, monospace; /* 换成更有科技感的等宽字体 */
             background-color: #fff0f5; 
             color: #333;
             text-align: center;
             margin: 0;
             padding: 0;
-            padding-bottom: 100px; /* 为底部胶卷留出足够空间 */
+            padding-bottom: 100px;
             overflow-x: hidden; 
         }
 
@@ -25,7 +25,7 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         h1 { margin: 0; font-size: 2.2em; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
-        p.subtitle { font-size: 1.2em; margin-top: 15px; opacity: 0.9; }
+        p.subtitle { font-size: 1.1em; margin-top: 15px; opacity: 0.9; letter-spacing: 2px; }
 
         /* --- 1. 照片墙 (photo1 & photo2) --- */
         .gallery {
@@ -45,8 +45,12 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             transition: transform 0.3s ease;
             object-fit: cover;
+            border: 2px solid transparent;
         }
-        .gallery img:hover { transform: scale(1.05); }
+        .gallery img:hover { 
+            transform: scale(1.05);
+            border: 2px solid #ff69b4; /* 悬停时出现识别框的感觉 */
+        }
 
         /* --- 2. 大横幅 (photo3) --- */
         .banner-container {
@@ -82,14 +86,15 @@
             justify-content: center;
         }
         .message-board::before {
-            content: "💌 CLICK ME";
+            content: ">> ACCESSING ENCRYPTED DATA..."; /* 更有POI感觉的提示 */
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 1.3em;
+            font-size: 1.1em;
             color: #ff69b4;
             transition: opacity 0.5s;
+            font-weight: bold;
         }
         .message-board.activated::before { opacity: 0; visibility: hidden; }
 
@@ -103,7 +108,7 @@
         }
         .message-content .line-visible { opacity: 1; transform: translateY(0); }
 
-        /* --- 4. 10张胶卷自动滚动 --- */
+        /* --- 4. 10张胶卷滚动 --- */
         .filmstrip-container {
             width: 100%;
             background-color: #333;
@@ -115,7 +120,7 @@
         }
         .filmstrip-track {
             display: flex;
-            width: calc(250px * 20); /* 10张图 * 2组 = 20 */
+            width: calc(250px * 20); 
             animation: scrollFilm 35s linear infinite;
         }
         .filmstrip-track:hover { animation-play-state: paused; }
@@ -134,14 +139,39 @@
             100% { transform: translateX(calc(-250px * 10)); }
         }
 
-        footer { padding: 40px 20px; color: #888; font-size: 0.9em; }
+        /* --- 5. 核心修改：摄像头控制按钮 --- */
+        #music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999;
+            cursor: pointer;
+            font-size: 30px;
+            background: rgba(255, 255, 255, 0.8); /* 半透明背景 */
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #music-control:hover {
+            transform: scale(1.1);
+            background: rgba(255, 182, 193, 1);
+        }
+
+        footer { padding: 40px 20px; color: #888; font-size: 0.8em; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
     <header>
         <h1>🎉 祝世界第一神奇宝贝公主殿下生日快乐！ 🎂</h1>
-        <p class="subtitle">感谢相遇</p>
+        <p class="subtitle">SYSTEM STATUS: FULLY FUNCTIONAL</p>
     </header>
 
     <section class="gallery">
@@ -155,7 +185,7 @@
 
     <section class="message-board" id="interactive-message">
         <div class="message-content" id="message-text">
-            <h2 style="text-align: center; color: #ff69b4;">Surprise💌</h2>
+            <h2 style="text-align: center; color: #ff69b4;">DECRYPTION COMPLETE 💌</h2>
             <p><strong>Hi Mia</strong>，</p>
             <p>这个网站只是个浅浅的尝试，</p>
             <p>我暂时写不出机器宝宝那样的代码，这串也是在Gemini帮忙下写出的。</p>
@@ -163,8 +193,8 @@
             <p>但如果持续写下去，应该能整越来越多花活吧。</p>
             <p>不知豆。</p>
             <p>但未来可期=v=！</p>
-            <p style="color: #ff69b4; font-style: italic;">"You are being watched... by someone who cares about you. Happy Birthday!"</p>
-            <p style="text-align: right; margin-top: 30px;">永远爱你的，<br><strong> 梦忆 </strong></p>
+            <p style="color: #ff69b4; font-weight: bold;">"You are being watched... by someone who cares about you. Happy Birthday!"</p>
+            <p style="text-align: right; margin-top: 30px;">永远爱你的，<br><strong> ESTEL </strong></p>
         </div>
     </section>
 
@@ -194,14 +224,14 @@
     </section>
 
     <footer>
-        <p>Made with ❤️ (半手搓) JUST for YOU | 2026</p>
+        <p>IDENTIFIED ASSET: MIA | ADMIN: ESETL | 2016-?</p>
     </footer>
 
     <audio id="bgm" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="music-control" style="position: fixed; top: 20px; right: 20px; z-index: 999; cursor: pointer; font-size: 24px;">🎵</div>
+    <div id="music-control">📹</div>
 
     <script>
         const bgm = document.getElementById('bgm');
@@ -209,14 +239,22 @@
         const messageBoard = document.getElementById('interactive-message');
         const messageTextContainer = document.getElementById('message-text');
         
-        // 音频播放控制
+        // 音频播放控制：点击图标切换摄像头状态
         document.addEventListener('click', () => { if (bgm.paused) bgm.play(); }, { once: true });
         musicBtn.addEventListener('click', () => {
-            if (bgm.paused) { bgm.play(); musicBtn.innerText = '🎵'; }
-            else { bgm.pause(); musicBtn.innerText = '🔇'; }
+            if (bgm.paused) { 
+                bgm.play(); 
+                musicBtn.innerText = '📹'; // 播放时显示摄像头
+                musicBtn.style.boxShadow = "0 0 15px rgba(255, 105, 180, 0.6)";
+            }
+            else { 
+                bgm.pause(); 
+                musicBtn.innerText = '🚫'; // 停止时显示禁用符号，更有监控关闭的感觉
+                musicBtn.style.boxShadow = "none";
+            }
         });
 
-        // 留言板点击逐行显示
+        // 留言板互动逻辑
         let hasActivated = false;
         messageBoard.addEventListener('click', function() {
             if (hasActivated) return;
@@ -227,7 +265,7 @@
             elements.forEach((el, index) => {
                 setTimeout(() => {
                     el.classList.add('line-visible');
-                }, index * 700); // 每一行出来的速度，1000毫秒
+                }, index * 800); 
             });
         });
     </script>
