@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -8,65 +8,63 @@
         /* --- 基础样式 --- */
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background-color: #fff0f5; /* 温馨的淡紫红色背景 */
+            background-color: #fff0f5; 
             color: #333;
             text-align: center;
             margin: 0;
             padding: 0;
-            padding-bottom: 50px; /* 底部留白 */
+            padding-bottom: 100px; /* 为底部胶卷留出足够空间 */
+            overflow-x: hidden; 
         }
 
         /* --- 顶部横幅 --- */
         header {
             padding: 60px 20px;
-            background-color: #ffb6c1; /* 浅粉色 */
+            background-color: #ffb6c1; 
             color: white;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        h1 { margin: 0; font-size: 2.5em; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
+        h1 { margin: 0; font-size: 2.2em; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
         p.subtitle { font-size: 1.2em; margin-top: 15px; opacity: 0.9; }
 
-        /* --- 1. 照片墙样式 (存放 photo1 和 photo2) --- */
+        /* --- 1. 照片墙 (photo1 & photo2) --- */
         .gallery {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 25px;
             padding: 40px 20px;
-            max-width: 1000px; /* 限制最大宽度，避免大屏上排太散 */
-            margin: 0 auto; /* 居中 */
+            max-width: 1000px;
+            margin: 0 auto;
         }
         .gallery img {
             width: 100%;
-            max-width: 350px; /* 适当放大了照片，看起来更饱满 */
+            max-width: 350px;
             height: auto;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            object-fit: cover; /* 如果原图比例不同，裁切保留中间，不变形 */
+            transition: transform 0.3s ease;
+            object-fit: cover;
         }
-        .gallery img:hover {
-            transform: scale(1.05); /* 鼠标放上去稍微放大 */
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-        }
+        .gallery img:hover { transform: scale(1.05); }
 
-        /* --- 2. 核心修改：大横幅图片样式 (存放 photo3) --- */
+        /* --- 2. 大横幅 (photo3) --- */
         .banner-container {
-            width: 100%; /* 撑满屏幕宽度 */
-            max-width: 1100px; /* 限制最大宽度，避免在超大显示器上太高 */
-            margin: 20px auto; /* 上下留白，左右居中 */
-            padding: 0 20px; /* 手机端两边留点空隙 */
-            box-sizing: border-box; /* 确保 padding 不挤开宽度 */
+            width: 100%;
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
         }
         .banner-photo {
-            width: 100%; /* 宽度撑满容器 */
-            height: auto; /* 高度自动：关键！确保不变形 */
-            display: block; /* 消除图片底部间隙 */
-            border-radius: 20px; /* 圆角，更好看 */
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 20px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
 
-        /* --- 信件/留言板 --- */
+        /* --- 3. 留言板（互动渐显） --- */
         .message-board {
             max-width: 700px;
             margin: 40px auto;
@@ -77,89 +75,161 @@
             line-height: 1.8;
             text-align: left;
             position: relative;
+            cursor: pointer;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
-        /* 装饰用的小爱心 */
         .message-board::before {
-            content: "💗";
+            content: "💌 点击解锁惊喜留言";
             position: absolute;
-            top: -15px;
-            left: 20px;
-            font-size: 2em;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.3em;
+            color: #ff69b4;
+            transition: opacity 0.5s;
         }
-        .message-board h2 { text-align: center; color: #ff69b4; margin-top: 0; }
-        .message-board p { margin: 15px 0; font-size: 1.05em; }
+        .message-board.activated::before { opacity: 0; visibility: hidden; }
 
-        /* --- 底部 --- */
-        footer {
-            padding: 30px 20px;
-            color: #888;
-            font-size: 0.9em;
-            border-top: 1px solid rgba(0,0,0,0.05);
-            margin-top: auto;
+        .message-content { opacity: 0; transition: opacity 1s; }
+        .message-board.activated .message-content { opacity: 1; }
+
+        .message-content p, .message-content h2 { 
+            opacity: 0; 
+            transform: translateY(15px); 
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
+        .message-content .line-visible { opacity: 1; transform: translateY(0); }
+
+        /* --- 4. 10张胶卷自动滚动 --- */
+        .filmstrip-container {
+            width: 100%;
+            background-color: #333;
+            padding: 30px 0;
+            border-top: 5px dashed #777;
+            border-bottom: 5px dashed #777;
+            overflow: hidden;
+            margin-top: 50px;
+        }
+        .filmstrip-track {
+            display: flex;
+            width: calc(250px * 20); /* 10张图 * 2组 = 20 */
+            animation: scrollFilm 35s linear infinite;
+        }
+        .filmstrip-track:hover { animation-play-state: paused; }
+
+        .filmstrip-item {
+            width: 230px;
+            height: 155px;
+            margin: 0 10px;
+            border: 5px solid white;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        @keyframes scrollFilm {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-250px * 10)); }
+        }
+
+        footer { padding: 40px 20px; color: #888; font-size: 0.9em; }
     </style>
 </head>
 <body>
+
     <header>
         <h1>🎉 祝世界第一神奇宝贝公主殿下生日快乐！ 🎂</h1>
         <p class="subtitle">感谢相遇</p>
     </header>
 
     <section class="gallery">
-        <img src="photo1.jpg" alt="我们的合照 1">
-        <img src="photo2.jpg" alt="我们的合照 2">
-        </section>
+        <img src="photo1.jpg" alt="合照1">
+        <img src="photo2.jpg" alt="合照2">
+    </section>
 
     <div class="banner-container">
-        <img src="photo3.jpg" alt="我们的大合照横幅" class="banner-photo">
+        <img src="photo3.jpg" alt="大横幅" class="banner-photo">
     </div>
 
-    <section class="message-board">
-        <h2>Surprise💌</h2>
-        <p><strong>Hi Mia</strong>，</p>
-        <p>这个网站只是个浅浅的尝试，</p>
-        <p>我暂时写不出机器宝宝那样的代码，这串也是在Gemini帮忙下写出的。</p>
-        <p>AI就是神！</p>
-        <p>但如果持续写下去，应该能整越来越多花活吧。</p>
-        <p>不知豆。</p>
-        <p>但未来可期=v=！</p>
-        <p>"You are being watched... by someone who cares about you. Happy Birthday!"
-        <p style="text-align: right; margin-top: 30px;">永远爱你的，<br><strong> 梦忆 </strong></p>
+    <section class="message-board" id="interactive-message">
+        <div class="message-content" id="message-text">
+            <h2 style="text-align: center; color: #ff69b4;">Surprise💌</h2>
+            <p><strong>Hi Mia</strong>，</p>
+            <p>这个网站只是个浅浅的尝试，</p>
+            <p>我暂时写不出机器宝宝那样的代码，这串也是在Gemini帮忙下写出的。</p>
+            <p>AI就是神！</p>
+            <p>但如果持续写下去，应该能整越来越多花活吧。</p>
+            <p>不知豆。</p>
+            <p>但未来可期=v=！</p>
+            <p style="color: #ff69b4; font-style: italic;">"You are being watched... by someone who cares about you. Happy Birthday!"</p>
+            <p style="text-align: right; margin-top: 30px;">永远爱你的，<br><strong> 梦忆 </strong></p>
+        </div>
+    </section>
+
+    <section class="filmstrip-container">
+        <div class="filmstrip-track">
+            <img src="film1.jpg" class="filmstrip-item">
+            <img src="film2.jpg" class="filmstrip-item">
+            <img src="film3.jpg" class="filmstrip-item">
+            <img src="film4.jpg" class="filmstrip-item">
+            <img src="film5.jpg" class="filmstrip-item">
+            <img src="film6.jpg" class="filmstrip-item">
+            <img src="film7.jpg" class="filmstrip-item">
+            <img src="film8.jpg" class="filmstrip-item">
+            <img src="film9.jpg" class="filmstrip-item">
+            <img src="film10.jpg" class="filmstrip-item">
+            <img src="film1.jpg" class="filmstrip-item">
+            <img src="film2.jpg" class="filmstrip-item">
+            <img src="film3.jpg" class="filmstrip-item">
+            <img src="film4.jpg" class="filmstrip-item">
+            <img src="film5.jpg" class="filmstrip-item">
+            <img src="film6.jpg" class="filmstrip-item">
+            <img src="film7.jpg" class="filmstrip-item">
+            <img src="film8.jpg" class="filmstrip-item">
+            <img src="film9.jpg" class="filmstrip-item">
+            <img src="film10.jpg" class="filmstrip-item">
+        </div>
     </section>
 
     <footer>
-        <p>Made with ❤️ (半手搓)JUST for YOU </p>
+        <p>Made with ❤️ (半手搓) JUST for YOU | 2024</p>
     </footer>
-</body>
+
     <audio id="bgm" loop>
-    <source src="music.mp3" type="audio/mpeg">
-    你的浏览器不支持音频播放。
-</audio>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
 
-<div id="music-control" style="position: fixed; top: 20px; right: 20px; z-index: 999; cursor: pointer; font-size: 24px;">
-    🎵
-</div>
+    <div id="music-control" style="position: fixed; top: 20px; right: 20px; z-index: 999; cursor: pointer; font-size: 24px;">🎵</div>
 
-<script>
-    const bgm = document.getElementById('bgm');
-    const musicBtn = document.getElementById('music-control');
+    <script>
+        const bgm = document.getElementById('bgm');
+        const musicBtn = document.getElementById('music-control');
+        const messageBoard = document.getElementById('interactive-message');
+        const messageTextContainer = document.getElementById('message-text');
+        
+        // 音频播放控制
+        document.addEventListener('click', () => { if (bgm.paused) bgm.play(); }, { once: true });
+        musicBtn.addEventListener('click', () => {
+            if (bgm.paused) { bgm.play(); musicBtn.innerText = '🎵'; }
+            else { bgm.pause(); musicBtn.innerText = '🔇'; }
+        });
 
-    // 尝试在用户第一次点击页面时播放音乐
-    document.addEventListener('click', function() {
-        if (bgm.paused) {
-            bgm.play();
-        }
-    }, { once: true }); // once: true 表示这个点击监听只执行一次
-
-    // 点击右上角图标可以手动开关
-    musicBtn.addEventListener('click', function() {
-        if (bgm.paused) {
-            bgm.play();
-            musicBtn.innerText = '🎵';
-        } else {
-            bgm.pause();
-            musicBtn.innerText = '🔇';
-        }
-    });
-</script>
+        // 留言板点击逐行显示
+        let hasActivated = false;
+        messageBoard.addEventListener('click', function() {
+            if (hasActivated) return;
+            hasActivated = true;
+            this.classList.add('activated');
+            
+            const elements = messageTextContainer.querySelectorAll('h2, p');
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.classList.add('line-visible');
+                }, index * 700); // 每一行出来的速度，700毫秒
+            });
+        });
+    </script>
+</body>
 </html>
