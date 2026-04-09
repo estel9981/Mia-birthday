@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System Status: EVALUATING ASSET Mia</title>
     <style>
-        /* --- 1. 基础设置 --- */
+        /* --- 1. 基础设置与背景图 (保持不变) --- */
         body {
             font-family: 'Share Tech Mono', 'Courier New', Courier, monospace; 
             color: #ffffff;
@@ -14,12 +14,13 @@
             padding: 0;
             padding-bottom: 120px;
             overflow-x: hidden;
-            background-image: url('bg.jpg'); 
+            background-image: url('bg.jpg'); /* 你的背景图 */
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             background-repeat: no-repeat;
             background-color: #050505; 
+            position: relative; /* 为钥匙容器提供定位基准 */
         }
         
         :root {
@@ -29,12 +30,13 @@
             --poi-border: rgba(248, 234, 43, 0.6);
         }
 
-        /* --- 2. 顶部横幅 --- */
+        /* --- 2. 顶部横幅 (保持不变) --- */
         header {
             padding: 40px 20px;
             background-color: var(--poi-bg-box);
             border-bottom: 2px solid var(--poi-accent);
             position: relative;
+            z-index: 10; /* 确保横幅在钥匙上面 */
         }
         header::after {
             content: "SECURED CONNECTION [ TM 1.0.sys ]";
@@ -49,7 +51,7 @@
         h1 { margin: 0; font-size: 2.0em; text-transform: uppercase; letter-spacing: 2px; }
         p.subtitle { font-size: 1.1em; margin-top: 10px; opacity: 0.8; letter-spacing: 1px; color: var(--poi-accent); }
 
-        /* --- 3. 照片墙 --- */
+        /* --- 3. 照片墙 (保持不变) --- */
         .gallery {
             display: flex;
             flex-wrap: wrap;
@@ -58,6 +60,8 @@
             padding: 50px 20px;
             max-width: 1000px;
             margin: 0 auto;
+            position: relative;
+            z-index: 10; /* 确保照片在钥匙上面 */
         }
         .gallery .img-wrapper {
             position: relative;
@@ -88,13 +92,15 @@
         .gallery .img-wrapper::after { bottom: -5px; right: -5px; border-bottom: 2px solid var(--poi-accent); border-right: 2px solid var(--poi-accent); }
         .gallery .img-wrapper:hover::before, .gallery .img-wrapper:hover::after { opacity: 1; transform: translate(5px, 5px); }
 
-        /* --- 4. 大横幅 --- */
+        /* --- 4. 大横幅 (保持不变) --- */
         .banner-container {
             width: 100%;
             max-width: 1100px;
             margin: 20px auto;
             padding: 0 20px;
             box-sizing: border-box;
+            position: relative;
+            z-index: 10;
         }
         .banner-photo {
             width: 100%;
@@ -105,7 +111,7 @@
             box-shadow: 0 0 15px rgba(248, 234, 43, 0.2);
         }
 
-        /* --- 5. 留言板（增加加密逻辑样式） --- */
+        /* --- 5. 留言板 (保持原本的加密逻辑样式) --- */
         .message-board {
             max-width: 750px;
             margin: 50px auto;
@@ -122,6 +128,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            z-index: 10; /* 确保留言板在钥匙上面 */
         }
         
         .message-board::before {
@@ -139,7 +146,7 @@
         }
         .message-board.activated::before { opacity: 0; visibility: hidden; }
 
-        .message-content { opacity: 0; transition: opacity 1s; display: none; } /* 初始完全隐藏内容 */
+        .message-content { opacity: 0; transition: opacity 1s; display: none; }
         .message-board.activated .message-content { opacity: 1; display: block; }
 
         .message-content p, .message-content h2 { 
@@ -151,7 +158,7 @@
         .message-content p { color: #dddddd; }
         .message-content p strong { color: var(--poi-accent); }
 
-        /* --- 6. 10张胶卷滚动 --- */
+        /* --- 6. 10张胶卷滚动 (保持不变) --- */
         .filmstrip-container {
             width: 100%;
             background-color: rgba(20, 20, 20, 0.9);
@@ -160,6 +167,8 @@
             border-bottom: 5px dashed var(--poi-border);
             overflow: hidden;
             margin-top: 60px;
+            position: relative;
+            z-index: 10;
         }
         .filmstrip-track {
             display: flex;
@@ -183,7 +192,7 @@
             100% { transform: translateX(calc(-250px * 10)); }
         }
 
-        /* --- 7. 控制按钮 --- */
+        /* --- 7. 控制按钮 (保持不变) --- */
         #music-control {
             position: fixed;
             top: 20px;
@@ -202,6 +211,7 @@
             display: flex; align-items: center; justify-content: center;
         }
 
+        /* --- 8. 页脚 (保持不变) --- */
         footer {
             padding: 40px 20px;
             background-color: var(--poi-bg-box);
@@ -209,12 +219,56 @@
             font-size: 0.8em;
             letter-spacing: 1px;
             border-top: 1px solid var(--poi-border);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* --- 核心核心：钥匙飘落系统的 CSS 样式 --- */
+        #key-container {
+            position: fixed; /* 固定在屏幕，不随滚动条移动 */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* 关键：确保钥匙不会阻挡鼠标点击网页内容 */
+            z-index: 1; /* 钥匙在最底层，背景图之上，网页内容之下 */
+            overflow: hidden;
+        }
+
+        .falling-key {
+            position: absolute;
+            background-image: url('key.png'); /* 读取你的钥匙透明图 */
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.6; /* 淡淡的钥匙，不抢主图风头 */
+            filter: drop-shadow(0 0 5px rgba(248, 234, 43, 0.5)); /* 增加一点黄色光晕 */
+            animation: fallKey linear infinite; /* 应用飘落动画 */
+        }
+
+        /* 定义飘落动画 */
+        @keyframes fallKey {
+            0% {
+                transform: translateY(-100px) rotate(0deg); /* 从屏幕上方开始，旋转0度 */
+                opacity: 0; /* 刚开始是透明的 */
+            }
+            10% {
+                opacity: 0.6; /* 飘入屏幕后变亮 */
+            }
+            90% {
+                opacity: 0.6; /* 即将离开时保持亮度 */
+            }
+            100% {
+                transform: translateY(105vh) rotate(720deg); /* 飘落到屏幕最下方，旋转多圈 */
+                opacity: 0; /* 离开时变透明 */
+            }
         }
 
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
     </style>
 </head>
 <body>
+
+    <div id="key-container"></div>
 
     <header>
         <h1>🎉 EVALUATING ASSET: MIA 🎂</h1>
@@ -269,6 +323,44 @@
         const messageBoard = document.getElementById('interactive-message');
         const messageTextContainer = document.getElementById('message-text');
         
+        // --- 核心改动：钥匙飘落系统的 JavaScript 逻辑 ---
+        function createKeys() {
+            const container = document.getElementById('key-container');
+            const keyCount = 25; // 屏幕上同时存在的钥匙数量
+
+            for (let i = 0; i < keyCount; i++) {
+                // 创建一个钥匙元素
+                const key = document.createElement('div');
+                key.classList.add('falling-key');
+
+                // 随机化每一个钥匙的属性，让它们看起来不整齐，更自然
+                
+                // 1. 随机起始横向位置 (0% - 100%)
+                const startLeft = Math.random() * 100;
+                key.style.left = `${startLeft}%`;
+
+                // 2. 随机大小 (20px - 45px)
+                const size = Math.random() * 25 + 20;
+                key.style.width = `${size}px`;
+                key.style.height = `${size}px`;
+
+                // 3. 随机动画持续时间 (10s - 25s)，让钥匙落下速度不一样
+                const duration = Math.random() * 15 + 10;
+                key.style.animationDuration = `${duration}s`;
+
+                // 4. 随机动画延迟时间，防止所有钥匙同时落下
+                const delay = Math.random() * 20; // 0s - 20s 延迟
+                key.style.animationDelay = `${delay}s`;
+
+                // 将钥匙添加到容器中
+                container.appendChild(key);
+            }
+        }
+
+        // 页面加载完成后立即执行
+        window.onload = createKeys;
+
+        // --- 原本的音频和留言板逻辑 (保持不变) ---
         document.addEventListener('click', () => { if (bgm.paused) bgm.play(); }, { once: true });
         musicBtn.addEventListener('click', () => {
             if (bgm.paused) { 
@@ -283,19 +375,13 @@
             }
         });
 
-        // --- 核心改动：增加生日校验逻辑 ---
         let hasActivated = false;
         messageBoard.addEventListener('click', function() {
             if (hasActivated) return;
-
-            // 弹出输入框
             const userInput = prompt(">> SECURITY CHECK: INPUT YOUR BIRTHDAY (YYYYMMDD)");
-
-            // 判断输入是否为 19990622
             if (userInput === "19990622") {
                 hasActivated = true;
                 this.classList.add('activated');
-                
                 const elements = messageTextContainer.querySelectorAll('h2, p');
                 elements.forEach((el, index) => {
                     setTimeout(() => {
@@ -303,7 +389,6 @@
                     }, index * 800); 
                 });
             } else if (userInput === null) {
-                // 用户点击了取消
             } else {
                 alert(">> ACCESS DENIED: INVALID CREDENTIALS.");
             }
