@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System Status: EVALUATING ASSET Mia</title>
     <style>
-        /* --- 1. 核心核心：科技风基础设置与背景图 --- */
+        /* --- 1. 基础设置 --- */
         body {
             font-family: 'Share Tech Mono', 'Courier New', Courier, monospace; 
             color: #ffffff;
@@ -14,8 +14,6 @@
             padding: 0;
             padding-bottom: 120px;
             overflow-x: hidden;
-            
-            /* --- 背景图指令 --- */
             background-image: url('bg.jpg'); 
             background-size: cover;
             background-position: center;
@@ -24,9 +22,6 @@
             background-color: #050505; 
         }
         
-        /* --- 修正重点：已彻底删除原有的 body::before 扫描线覆盖层 --- */
-
-        /* --- 定义全局标志性颜色：POI 黄 --- */
         :root {
             --poi-accent: #f8ea2b;
             --poi-text: #ffffff;
@@ -77,8 +72,6 @@
             object-fit: cover;
             border: 1px solid var(--poi-border);
             box-shadow: 0 0 10px rgba(248, 234, 43, 0.2);
-            /* 确保图片渲染清晰，不带任何杂质 */
-            image-rendering: auto; 
         }
         
         .gallery .img-wrapper:hover img {
@@ -112,7 +105,7 @@
             box-shadow: 0 0 15px rgba(248, 234, 43, 0.2);
         }
 
-        /* --- 5. 留言板 --- */
+        /* --- 5. 留言板（增加加密逻辑样式） --- */
         .message-board {
             max-width: 750px;
             margin: 50px auto;
@@ -132,7 +125,7 @@
         }
         
         .message-board::before {
-            content: ">> ACCESSING ENCRYPTED FILE: [ MIA_BDAY_LOG.dat ]";
+            content: ">> [ ENCRYPTED ]: INPUT YOUR BIRTHDAY TO DECRYPT";
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
@@ -141,11 +134,13 @@
             transition: opacity 0.5s;
             font-weight: bold;
             letter-spacing: 1px;
+            text-align: center;
+            width: 90%;
         }
         .message-board.activated::before { opacity: 0; visibility: hidden; }
 
-        .message-content { opacity: 0; transition: opacity 1s; }
-        .message-board.activated .message-content { opacity: 1; }
+        .message-content { opacity: 0; transition: opacity 1s; display: none; } /* 初始完全隐藏内容 */
+        .message-board.activated .message-content { opacity: 1; display: block; }
 
         .message-content p, .message-content h2 { 
             opacity: 0; 
@@ -206,14 +201,7 @@
             width: 55px; height: 55px;
             display: flex; align-items: center; justify-content: center;
         }
-        
-        #music-control:hover {
-            transform: scale(1.05) translateY(-3px);
-            background: var(--poi-bg-box);
-            border: 1px solid var(--poi-accent);
-        }
 
-        /* 页脚 */
         footer {
             padding: 40px 20px;
             background-color: var(--poi-bg-box);
@@ -287,28 +275,38 @@
                 bgm.play(); 
                 musicBtn.innerText = '📹'; 
                 musicBtn.style.boxShadow = "0 0 20px rgba(248, 234, 43, 0.6)";
-                musicBtn.style.color = "var(--poi-accent)";
             }
             else { 
                 bgm.pause(); 
                 musicBtn.innerText = '🚫'; 
                 musicBtn.style.boxShadow = "none";
-                musicBtn.style.color = "#ff3333";
             }
         });
 
+        // --- 核心改动：增加生日校验逻辑 ---
         let hasActivated = false;
         messageBoard.addEventListener('click', function() {
             if (hasActivated) return;
-            hasActivated = true;
-            this.classList.add('activated');
-            
-            const elements = messageTextContainer.querySelectorAll('h2, p');
-            elements.forEach((el, index) => {
-                setTimeout(() => {
-                    el.classList.add('line-visible');
-                }, index * 800); 
-            });
+
+            // 弹出输入框
+            const userInput = prompt(">> SECURITY CHECK: INPUT YOUR BIRTHDAY (YYYYMMDD)");
+
+            // 判断输入是否为 19990622
+            if (userInput === "19990622") {
+                hasActivated = true;
+                this.classList.add('activated');
+                
+                const elements = messageTextContainer.querySelectorAll('h2, p');
+                elements.forEach((el, index) => {
+                    setTimeout(() => {
+                        el.classList.add('line-visible');
+                    }, index * 800); 
+                });
+            } else if (userInput === null) {
+                // 用户点击了取消
+            } else {
+                alert(">> ACCESS DENIED: INVALID CREDENTIALS.");
+            }
         });
     </script>
 </body>
