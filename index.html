@@ -20,6 +20,7 @@
             background-attachment: fixed;
             background-repeat: no-repeat;
             background-color: #050505; 
+            position: relative; /* 必须加这一行，作为钥匙的基准 */
         }
         
         :root {
@@ -35,6 +36,7 @@
             background-color: var(--poi-bg-box);
             border-bottom: 2px solid var(--poi-accent);
             position: relative;
+            z-index: 10; /* 确保在钥匙之上 */
         }
         header::after {
             content: "SECURED CONNECTION [ TM 1.0.sys ]";
@@ -58,6 +60,8 @@
             padding: 50px 20px;
             max-width: 1000px;
             margin: 0 auto;
+            position: relative;
+            z-index: 10;
         }
         .gallery .img-wrapper {
             position: relative;
@@ -95,6 +99,8 @@
             margin: 20px auto;
             padding: 0 20px;
             box-sizing: border-box;
+            position: relative;
+            z-index: 10;
         }
         .banner-photo {
             width: 100%;
@@ -105,7 +111,7 @@
             box-shadow: 0 0 15px rgba(248, 234, 43, 0.2);
         }
 
-        /* --- 5. 留言板（增加加密逻辑样式） --- */
+        /* --- 5. 留言板 --- */
         .message-board {
             max-width: 750px;
             margin: 50px auto;
@@ -122,6 +128,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            z-index: 10;
         }
         
         .message-board::before {
@@ -139,7 +146,7 @@
         }
         .message-board.activated::before { opacity: 0; visibility: hidden; }
 
-        .message-content { opacity: 0; transition: opacity 1s; display: none; } /* 初始完全隐藏内容 */
+        .message-content { opacity: 0; transition: opacity 1s; display: none; }
         .message-board.activated .message-content { opacity: 1; display: block; }
 
         .message-content p, .message-content h2 { 
@@ -160,6 +167,8 @@
             border-bottom: 5px dashed var(--poi-border);
             overflow: hidden;
             margin-top: 60px;
+            position: relative;
+            z-index: 10;
         }
         .filmstrip-track {
             display: flex;
@@ -209,12 +218,43 @@
             font-size: 0.8em;
             letter-spacing: 1px;
             border-top: 1px solid var(--poi-border);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* --- 8. 核心：轻量化钥匙下坠样式 --- */
+        #key-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* 确保不影响点击网页 */
+            z-index: 1; /* 在背景图和内容之间 */
+            overflow: hidden;
+        }
+
+        .falling-key {
+            position: absolute;
+            fill: var(--poi-accent); /* 钥匙颜色 */
+            opacity: 0.5;
+            filter: drop-shadow(0 0 5px rgba(248, 234, 43, 0.3));
+            animation: fallKey linear infinite;
+        }
+
+        @keyframes fallKey {
+            0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
 
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
     </style>
 </head>
 <body>
+
+    <div id="key-container"></div>
 
     <header>
         <h1>🎉 EVALUATING ASSET: MIA 🎂</h1>
@@ -241,7 +281,7 @@
             <p>不知豆。</p>
             <p>但未来可期=v=！</p>
             <p style="color: var(--poi-accent); font-weight: bold; border-left: 3px solid var(--poi-accent); padding-left: 10px;">"You are being watched... by someone who cares about you. Happy Birthday!"</p>
-            <p style="text-align: right; margin-top: 30px; font-size: 0.9em; opacity: 0.7;">&lt;&lt; END LOG &gt;&gt;<br>永远爱你的，<strong> Estel </strong></p>
+            <p style="text-align: right; margin-top: 30px; font-size: 0.9em; opacity: 0.7;">&lt;&lt; END LOG &gt;&gt;<br>永远爱你的，<strong> 梦忆 </strong></p>
         </div>
     </section>
 
@@ -269,42 +309,50 @@
         const messageBoard = document.getElementById('interactive-message');
         const messageTextContainer = document.getElementById('message-text');
         
+        // --- 钥匙生成脚本 ---
+        function createKeys() {
+            const container = document.getElementById('key-container');
+            const keyCount = 20; 
+            const keySVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>`;
+
+            for (let i = 0; i < keyCount; i++) {
+                const key = document.createElement('div');
+                key.classList.add('falling-key');
+                key.innerHTML = keySVG;
+                const size = Math.random() * 15 + 20;
+                key.style.left = `${Math.random() * 100}%`;
+                key.style.width = `${size}px`;
+                key.style.height = `${size}px`;
+                key.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                key.style.animationDelay = `${Math.random() * 15}s`;
+                container.appendChild(key);
+            }
+        }
+        window.onload = createKeys;
+
+        // 原有逻辑：音乐
         document.addEventListener('click', () => { if (bgm.paused) bgm.play(); }, { once: true });
         musicBtn.addEventListener('click', () => {
             if (bgm.paused) { 
-                bgm.play(); 
-                musicBtn.innerText = '📹'; 
-                musicBtn.style.boxShadow = "0 0 20px rgba(248, 234, 43, 0.6)";
-            }
-            else { 
-                bgm.pause(); 
-                musicBtn.innerText = '🚫'; 
-                musicBtn.style.boxShadow = "none";
+                bgm.play(); musicBtn.innerText = '📹'; musicBtn.style.boxShadow = "0 0 20px rgba(248, 234, 43, 0.6)";
+            } else { 
+                bgm.pause(); musicBtn.innerText = '🚫'; musicBtn.style.boxShadow = "none";
             }
         });
 
-        // --- 核心改动：增加生日校验逻辑 ---
+        // 原有逻辑：解密
         let hasActivated = false;
         messageBoard.addEventListener('click', function() {
             if (hasActivated) return;
-
-            // 弹出输入框
             const userInput = prompt(">> SECURITY CHECK: INPUT YOUR BIRTHDAY (YYYYMMDD)");
-
-            // 判断输入是否为 19990622
             if (userInput === "19990622") {
                 hasActivated = true;
                 this.classList.add('activated');
-                
                 const elements = messageTextContainer.querySelectorAll('h2, p');
                 elements.forEach((el, index) => {
-                    setTimeout(() => {
-                        el.classList.add('line-visible');
-                    }, index * 800); 
+                    setTimeout(() => { el.classList.add('line-visible'); }, index * 800); 
                 });
-            } else if (userInput === null) {
-                // 用户点击了取消
-            } else {
+            } else if (userInput !== null) {
                 alert(">> ACCESS DENIED: INVALID CREDENTIALS.");
             }
         });
