@@ -7,9 +7,8 @@
     <style>
         /* --- 1. 核心核心：科技风基础设置与背景图 --- */
         body {
-            /* 替换字体为更硬朗、更有科技感的等宽字体 */
             font-family: 'Share Tech Mono', 'Courier New', Courier, monospace; 
-            color: #ffffff; /* 基础文字改为纯白 */
+            color: #ffffff;
             text-align: center;
             margin: 0;
             padding: 0;
@@ -17,28 +16,28 @@
             overflow-x: hidden;
             
             /* --- 背景图指令 --- */
-            background-image: url('bg.jpg'); /* 读取你的背景图 */
-            background-size: cover; /* 撑满屏幕 */
-            background-position: center; /* 居中 */
-            background-attachment: fixed; /* 滚动时背景固定，增加景深感 */
+            background-image: url('bg.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             background-repeat: no-repeat;
-            
-            /* 如果背景图没加载出来，默认显示这个深色 */
             background-color: #050505; 
-            
+        }
+        
+        /* --- 修正重点：已彻底删除原有的 body::before 扫描线覆盖层 --- */
 
-        /* --- 定义全局标志性颜色：POI 黄 (替代粉色) --- */
+        /* --- 定义全局标志性颜色：POI 黄 --- */
         :root {
-            --poi-accent: #f8ea2b; /* 标志性的黄色，代表机器宝宝识别到普通人 */
+            --poi-accent: #f8ea2b;
             --poi-text: #ffffff;
-            --poi-bg-box: rgba(10, 10, 10, 0.85); /* 半透明黑，用于浮窗背景 */
-            --poi-border: rgba(248, 234, 43, 0.6); /* 黄色半透明边框 */
+            --poi-bg-box: rgba(10, 10, 10, 0.85);
+            --poi-border: rgba(248, 234, 43, 0.6);
         }
 
-        /* --- 2. 顶部横幅：UI 化 --- */
+        /* --- 2. 顶部横幅 --- */
         header {
             padding: 40px 20px;
-            background-color: var(--poi-bg-box); /* 半透明黑 */
+            background-color: var(--poi-bg-box);
             border-bottom: 2px solid var(--poi-accent);
             position: relative;
         }
@@ -55,7 +54,7 @@
         h1 { margin: 0; font-size: 2.0em; text-transform: uppercase; letter-spacing: 2px; }
         p.subtitle { font-size: 1.1em; margin-top: 10px; opacity: 0.8; letter-spacing: 1px; color: var(--poi-accent); }
 
-        /* --- 3. 照片墙：增加监控识别框效果 --- */
+        /* --- 3. 照片墙 --- */
         .gallery {
             display: flex;
             flex-wrap: wrap;
@@ -73,22 +72,21 @@
         .gallery img {
             width: 100%;
             height: auto;
-            border-radius: 4px; /* 去除圆润感，更有工业感 */
+            border-radius: 4px;
             transition: all 0.3s ease;
             object-fit: cover;
-            /* 基础边框和微弱的黄色外发光 */
             border: 1px solid var(--poi-border);
             box-shadow: 0 0 10px rgba(248, 234, 43, 0.2);
+            /* 确保图片渲染清晰，不带任何杂质 */
+            image-rendering: auto; 
         }
         
-        /* 悬停时的识别效果 */
         .gallery .img-wrapper:hover img {
             transform: scale(1.03);
             border: 1px solid var(--poi-accent);
             box-shadow: 0 0 20px rgba(248, 234, 43, 0.5);
         }
         
-        /* 增加 POI 风格的识别框角 (可选) */
         .gallery .img-wrapper::before, .gallery .img-wrapper::after {
             content: ""; position: absolute; width: 15px; height: 15px;
             transition: all 0.3s; pointer-events: none; opacity: 0;
@@ -97,7 +95,7 @@
         .gallery .img-wrapper::after { bottom: -5px; right: -5px; border-bottom: 2px solid var(--poi-accent); border-right: 2px solid var(--poi-accent); }
         .gallery .img-wrapper:hover::before, .gallery .img-wrapper:hover::after { opacity: 1; transform: translate(5px, 5px); }
 
-        /* --- 4. 大横幅 (photo3) --- */
+        /* --- 4. 大横幅 --- */
         .banner-container {
             width: 100%;
             max-width: 1100px;
@@ -114,12 +112,12 @@
             box-shadow: 0 0 15px rgba(248, 234, 43, 0.2);
         }
 
-        /* --- 5. 留言板：改成系统日志风格 --- */
+        /* --- 5. 留言板 --- */
         .message-board {
             max-width: 750px;
             margin: 50px auto;
             padding: 40px;
-            background: var(--poi-bg-box); /* 半透明黑背景 */
+            background: var(--poi-bg-box);
             border: 1px solid var(--poi-accent);
             border-radius: 8px;
             box-shadow: 0 0 20px rgba(248, 234, 43, 0.2);
@@ -133,7 +131,6 @@
             justify-content: center;
         }
         
-        /* 去除爱心，换成更有POI感觉的提示 */
         .message-board::before {
             content: ">> ACCESSING ENCRYPTED FILE: [ MIA_BDAY_LOG.dat ]";
             position: absolute;
@@ -156,15 +153,13 @@
             transition: opacity 0.8s ease, transform 0.8s ease;
         }
         .message-content .line-visible { opacity: 1; transform: translateY(0); }
-
-        /* 留言板内的字体微调 */
         .message-content p { color: #dddddd; }
-        .message-content p strong { color: var(--poi-accent); } /* 强调名字用黄色 */
+        .message-content p strong { color: var(--poi-accent); }
 
         /* --- 6. 10张胶卷滚动 --- */
         .filmstrip-container {
             width: 100%;
-            background-color: rgba(20, 20, 20, 0.9); /* 更深色的背景 */
+            background-color: rgba(20, 20, 20, 0.9);
             padding: 30px 0;
             border-top: 5px dashed var(--poi-border);
             border-bottom: 5px dashed var(--poi-border);
@@ -182,7 +177,7 @@
             width: 230px;
             height: 155px;
             margin: 0 10px;
-            border: 3px solid white; /* 保持白色边框，像打印出的相片 */
+            border: 3px solid white;
             object-fit: cover;
             flex-shrink: 0;
             box-shadow: 0 4px 8px rgba(0,0,0,0.5);
@@ -193,7 +188,7 @@
             100% { transform: translateX(calc(-250px * 10)); }
         }
 
-        /* --- 7. 核心微调：摄像头控制按钮 --- */
+        /* --- 7. 控制按钮 --- */
         #music-control {
             position: fixed;
             top: 20px;
@@ -201,10 +196,10 @@
             z-index: 999;
             cursor: pointer;
             font-size: 28px;
-            background: rgba(10, 10, 10, 0.8); /* 纯深色背景 */
-            color: var(--poi-accent); /* 图标用黄色 */
+            background: rgba(10, 10, 10, 0.8);
+            color: var(--poi-accent);
             padding: 12px;
-            border-radius: 4px; /* 去除圆形，更有模块感 */
+            border-radius: 4px;
             border: 1px solid var(--poi-border);
             box-shadow: 0 0 15px rgba(248, 234, 43, 0.3);
             transition: all 0.3s ease;
@@ -218,7 +213,7 @@
             border: 1px solid var(--poi-accent);
         }
 
-        /* --- 页脚：彻底 UI 化 --- */
+        /* 页脚 */
         footer {
             padding: 40px 20px;
             background-color: var(--poi-bg-box);
@@ -227,9 +222,7 @@
             letter-spacing: 1px;
             border-top: 1px solid var(--poi-border);
         }
-        footer p { margin: 5px 0; }
 
-        /* 引用字体库 */
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
     </style>
 </head>
@@ -266,26 +259,8 @@
 
     <section class="filmstrip-container">
         <div class="filmstrip-track">
-            <img src="film1.jpg" class="filmstrip-item">
-            <img src="film2.jpg" class="filmstrip-item">
-            <img src="film3.jpg" class="filmstrip-item">
-            <img src="film4.jpg" class="filmstrip-item">
-            <img src="film5.jpg" class="filmstrip-item">
-            <img src="film6.jpg" class="filmstrip-item">
-            <img src="film7.jpg" class="filmstrip-item">
-            <img src="film8.jpg" class="filmstrip-item">
-            <img src="film9.jpg" class="filmstrip-item">
-            <img src="film10.jpg" class="filmstrip-item">
-            <img src="film1.jpg" class="filmstrip-item">
-            <img src="film2.jpg" class="filmstrip-item">
-            <img src="film3.jpg" class="filmstrip-item">
-            <img src="film4.jpg" class="filmstrip-item">
-            <img src="film5.jpg" class="filmstrip-item">
-            <img src="film6.jpg" class="filmstrip-item">
-            <img src="film7.jpg" class="filmstrip-item">
-            <img src="film8.jpg" class="filmstrip-item">
-            <img src="film9.jpg" class="filmstrip-item">
-            <img src="film10.jpg" class="filmstrip-item">
+            <img src="film1.jpg" class="filmstrip-item"><img src="film2.jpg" class="filmstrip-item"><img src="film3.jpg" class="filmstrip-item"><img src="film4.jpg" class="filmstrip-item"><img src="film5.jpg" class="filmstrip-item"><img src="film6.jpg" class="filmstrip-item"><img src="film7.jpg" class="filmstrip-item"><img src="film8.jpg" class="filmstrip-item"><img src="film9.jpg" class="filmstrip-item"><img src="film10.jpg" class="filmstrip-item">
+            <img src="film1.jpg" class="filmstrip-item"><img src="film2.jpg" class="filmstrip-item"><img src="film3.jpg" class="filmstrip-item"><img src="film4.jpg" class="filmstrip-item"><img src="film5.jpg" class="filmstrip-item"><img src="film6.jpg" class="filmstrip-item"><img src="film7.jpg" class="filmstrip-item"><img src="film8.jpg" class="filmstrip-item"><img src="film9.jpg" class="filmstrip-item"><img src="film10.jpg" class="filmstrip-item">
         </div>
     </section>
 
@@ -306,7 +281,6 @@
         const messageBoard = document.getElementById('interactive-message');
         const messageTextContainer = document.getElementById('message-text');
         
-        // 音频播放控制 (保持原有逻辑，微调图标和光晕)
         document.addEventListener('click', () => { if (bgm.paused) bgm.play(); }, { once: true });
         musicBtn.addEventListener('click', () => {
             if (bgm.paused) { 
@@ -319,11 +293,10 @@
                 bgm.pause(); 
                 musicBtn.innerText = '🚫'; 
                 musicBtn.style.boxShadow = "none";
-                musicBtn.style.color = "#ff3333"; // 停止时变成红色禁用
+                musicBtn.style.color = "#ff3333";
             }
         });
 
-        // 留言板互动逻辑 (保持原有逻辑)
         let hasActivated = false;
         messageBoard.addEventListener('click', function() {
             if (hasActivated) return;
