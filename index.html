@@ -3,56 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Status: Active</title>
+    <title>System Status: EVALUATING ASSET Mia</title>
     <style>
-        /* --- 基础样式 --- */
+        /* --- 1. 核心核心：科技风基础设置与背景图 --- */
         body {
-            font-family: 'Courier New', Courier, monospace; /* 换成更有科技感的等宽字体 */
-            background-color: #fff0f5; 
-            color: #333;
+            /* 替换字体为更硬朗、更有科技感的等宽字体 */
+            font-family: 'Share Tech Mono', 'Courier New', Courier, monospace; 
+            color: #ffffff; /* 基础文字改为纯白 */
             text-align: center;
             margin: 0;
             padding: 0;
-            padding-bottom: 100px;
-            overflow-x: hidden; 
+            padding-bottom: 120px;
+            overflow-x: hidden;
+            
+            /* --- 背景图指令 --- */
+            background-image: url('bg.jpg'); /* 读取你的背景图 */
+            background-size: cover; /* 撑满屏幕 */
+            background-position: center; /* 居中 */
+            background-attachment: fixed; /* 滚动时背景固定，增加景深感 */
+            background-repeat: no-repeat;
+            
+            /* 如果背景图没加载出来，默认显示这个深色 */
+            background-color: #050505; 
+            
+            /* 增加一层淡淡的扫描线纹理，更有监控感 */
+            position: relative;
+        }
+        
+        /* 扫描线伪元素 */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+            background-size: 100% 4px;
+            z-index: 100; /* 在最上层 */
+            pointer-events: none; /* 不影响点击 */
+            opacity: 0.3; /* 淡淡的即可 */
         }
 
-        /* --- 顶部横幅 --- */
+        /* --- 定义全局标志性颜色：POI 黄 (替代粉色) --- */
+        :root {
+            --poi-accent: #f8ea2b; /* 标志性的黄色，代表机器宝宝识别到普通人 */
+            --poi-text: #ffffff;
+            --poi-bg-box: rgba(10, 10, 10, 0.85); /* 半透明黑，用于浮窗背景 */
+            --poi-border: rgba(248, 234, 43, 0.6); /* 黄色半透明边框 */
+        }
+
+        /* --- 2. 顶部横幅：UI 化 --- */
         header {
-            padding: 60px 20px;
-            background-color: #ffb6c1; 
-            color: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 40px 20px;
+            background-color: var(--poi-bg-box); /* 半透明黑 */
+            border-bottom: 2px solid var(--poi-accent);
+            position: relative;
         }
-        h1 { margin: 0; font-size: 2.2em; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
-        p.subtitle { font-size: 1.1em; margin-top: 15px; opacity: 0.9; letter-spacing: 2px; }
+        header::after {
+            content: "SECURED CONNECTION [ dreams-mimo.sys ]";
+            position: absolute;
+            bottom: 5px;
+            right: 10px;
+            font-size: 0.8em;
+            color: var(--poi-accent);
+            opacity: 0.7;
+        }
 
-        /* --- 1. 照片墙 (photo1 & photo2) --- */
+        h1 { margin: 0; font-size: 2.0em; text-transform: uppercase; letter-spacing: 2px; }
+        p.subtitle { font-size: 1.1em; margin-top: 10px; opacity: 0.8; letter-spacing: 1px; color: var(--poi-accent); }
+
+        /* --- 3. 照片墙：增加监控识别框效果 --- */
         .gallery {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 25px;
-            padding: 40px 20px;
+            gap: 30px;
+            padding: 50px 20px;
             max-width: 1000px;
             margin: 0 auto;
         }
+        .gallery .img-wrapper {
+            position: relative;
+            max-width: 350px;
+            width: 100%;
+        }
         .gallery img {
             width: 100%;
-            max-width: 350px;
             height: auto;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+            border-radius: 4px; /* 去除圆润感，更有工业感 */
+            transition: all 0.3s ease;
             object-fit: cover;
-            border: 2px solid transparent;
+            /* 基础边框和微弱的黄色外发光 */
+            border: 1px solid var(--poi-border);
+            box-shadow: 0 0 10px rgba(248, 234, 43, 0.2);
         }
-        .gallery img:hover { 
-            transform: scale(1.05);
-            border: 2px solid #ff69b4; /* 悬停时出现识别框的感觉 */
+        
+        /* 悬停时的识别效果 */
+        .gallery .img-wrapper:hover img {
+            transform: scale(1.03);
+            border: 1px solid var(--poi-accent);
+            box-shadow: 0 0 20px rgba(248, 234, 43, 0.5);
         }
+        
+        /* 增加 POI 风格的识别框角 (可选) */
+        .gallery .img-wrapper::before, .gallery .img-wrapper::after {
+            content: ""; position: absolute; width: 15px; height: 15px;
+            transition: all 0.3s; pointer-events: none; opacity: 0;
+        }
+        .gallery .img-wrapper::before { top: -5px; left: -5px; border-top: 2px solid var(--poi-accent); border-left: 2px solid var(--poi-accent); }
+        .gallery .img-wrapper::after { bottom: -5px; right: -5px; border-bottom: 2px solid var(--poi-accent); border-right: 2px solid var(--poi-accent); }
+        .gallery .img-wrapper:hover::before, .gallery .img-wrapper:hover::after { opacity: 1; transform: translate(5px, 5px); }
 
-        /* --- 2. 大横幅 (photo3) --- */
+        /* --- 4. 大横幅 (photo3) --- */
         .banner-container {
             width: 100%;
             max-width: 1100px;
@@ -64,18 +124,20 @@
             width: 100%;
             height: auto;
             display: block;
-            border-radius: 20px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            border: 2px solid var(--poi-border);
+            box-shadow: 0 0 15px rgba(248, 234, 43, 0.2);
         }
 
-        /* --- 3. 留言板（互动渐显） --- */
+        /* --- 5. 留言板：改成系统日志风格 --- */
         .message-board {
-            max-width: 700px;
-            margin: 40px auto;
+            max-width: 750px;
+            margin: 50px auto;
             padding: 40px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            background: var(--poi-bg-box); /* 半透明黑背景 */
+            border: 1px solid var(--poi-accent);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(248, 234, 43, 0.2);
             line-height: 1.8;
             text-align: left;
             position: relative;
@@ -85,16 +147,18 @@
             flex-direction: column;
             justify-content: center;
         }
+        
+        /* 去除爱心，换成更有POI感觉的提示 */
         .message-board::before {
-            content: ">> ACCESSING ENCRYPTED DATA..."; /* 更有POI感觉的提示 */
+            content: ">> ACCESSING ENCRYPTED FILE: [ MIA_BDAY_LOG.dat ]";
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             font-size: 1.1em;
-            color: #ff69b4;
+            color: var(--poi-accent);
             transition: opacity 0.5s;
             font-weight: bold;
+            letter-spacing: 1px;
         }
         .message-board.activated::before { opacity: 0; visibility: hidden; }
 
@@ -108,15 +172,19 @@
         }
         .message-content .line-visible { opacity: 1; transform: translateY(0); }
 
-        /* --- 4. 10张胶卷滚动 --- */
+        /* 留言板内的字体微调 */
+        .message-content p { color: #dddddd; }
+        .message-content p strong { color: var(--poi-accent); } /* 强调名字用黄色 */
+
+        /* --- 6. 10张胶卷滚动 --- */
         .filmstrip-container {
             width: 100%;
-            background-color: #333;
+            background-color: rgba(20, 20, 20, 0.9); /* 更深色的背景 */
             padding: 30px 0;
-            border-top: 5px dashed #777;
-            border-bottom: 5px dashed #777;
+            border-top: 5px dashed var(--poi-border);
+            border-bottom: 5px dashed var(--poi-border);
             overflow: hidden;
-            margin-top: 50px;
+            margin-top: 60px;
         }
         .filmstrip-track {
             display: flex;
@@ -129,9 +197,10 @@
             width: 230px;
             height: 155px;
             margin: 0 10px;
-            border: 5px solid white;
+            border: 3px solid white; /* 保持白色边框，像打印出的相片 */
             object-fit: cover;
             flex-shrink: 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
         }
 
         @keyframes scrollFilm {
@@ -139,44 +208,56 @@
             100% { transform: translateX(calc(-250px * 10)); }
         }
 
-        /* --- 5. 核心修改：摄像头控制按钮 --- */
+        /* --- 7. 核心微调：摄像头控制按钮 --- */
         #music-control {
             position: fixed;
             top: 20px;
             right: 20px;
             z-index: 999;
             cursor: pointer;
-            font-size: 30px;
-            background: rgba(255, 255, 255, 0.8); /* 半透明背景 */
-            padding: 10px;
-            border-radius: 50%;
-            box-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
+            font-size: 28px;
+            background: rgba(10, 10, 10, 0.8); /* 纯深色背景 */
+            color: var(--poi-accent); /* 图标用黄色 */
+            padding: 12px;
+            border-radius: 4px; /* 去除圆形，更有模块感 */
+            border: 1px solid var(--poi-border);
+            box-shadow: 0 0 15px rgba(248, 234, 43, 0.3);
             transition: all 0.3s ease;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 55px; height: 55px;
+            display: flex; align-items: center; justify-content: center;
         }
         
         #music-control:hover {
-            transform: scale(1.1);
-            background: rgba(255, 182, 193, 1);
+            transform: scale(1.05) translateY(-3px);
+            background: var(--poi-bg-box);
+            border: 1px solid var(--poi-accent);
         }
 
-        footer { padding: 40px 20px; color: #888; font-size: 0.8em; letter-spacing: 1px; }
+        /* --- 页脚：彻底 UI 化 --- */
+        footer {
+            padding: 40px 20px;
+            background-color: var(--poi-bg-box);
+            color: #888888;
+            font-size: 0.8em;
+            letter-spacing: 1px;
+            border-top: 1px solid var(--poi-border);
+        }
+        footer p { margin: 5px 0; }
+
+        /* 引用字体库 */
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
     </style>
 </head>
 <body>
 
     <header>
-        <h1>🎉 祝世界第一神奇宝贝公主殿下生日快乐！ 🎂</h1>
-        <p class="subtitle">SYSTEM STATUS: FULLY FUNCTIONAL</p>
+        <h1>🎉 EVALUATING ASSET: MIA 🎂</h1>
+        <p class="subtitle">SYSTEM STATUS: FULLY FUNCTIONAL | IDENTIFIED THREAT LEVEL: MINIMAL</p>
     </header>
 
     <section class="gallery">
-        <img src="photo1.jpg" alt="合照1">
-        <img src="photo2.jpg" alt="合照2">
+        <div class="img-wrapper"><img src="photo1.jpg" alt="合照1"></div>
+        <div class="img-wrapper"><img src="photo2.jpg" alt="合照2"></div>
     </section>
 
     <div class="banner-container">
@@ -185,7 +266,7 @@
 
     <section class="message-board" id="interactive-message">
         <div class="message-content" id="message-text">
-            <h2 style="text-align: center; color: #ff69b4;">DECRYPTION COMPLETE 💌</h2>
+            <h2 style="text-align: center; color: var(--poi-accent); text-transform: uppercase;">Decryption Complete 💌</h2>
             <p><strong>Hi Mia</strong>，</p>
             <p>这个网站只是个浅浅的尝试，</p>
             <p>我暂时写不出机器宝宝那样的代码，这串也是在Gemini帮忙下写出的。</p>
@@ -193,8 +274,8 @@
             <p>但如果持续写下去，应该能整越来越多花活吧。</p>
             <p>不知豆。</p>
             <p>但未来可期=v=！</p>
-            <p style="color: #ff69b4; font-weight: bold;">"You are being watched... by someone who cares about you. Happy Birthday!"</p>
-            <p style="text-align: right; margin-top: 30px;">永远爱你的，<br><strong> ESTEL </strong></p>
+            <p style="color: var(--poi-accent); font-weight: bold; border-left: 3px solid var(--poi-accent); padding-left: 10px;">"You are being watched... by someone who cares about you. Happy Birthday!"</p>
+            <p style="text-align: right; margin-top: 30px; font-size: 0.9em; opacity: 0.7;">&lt;&lt; END LOG &gt;&gt;<br>永远爱你的，<strong> 梦忆 </strong></p>
         </div>
     </section>
 
@@ -224,7 +305,8 @@
     </section>
 
     <footer>
-        <p>IDENTIFIED TARGET: MIA | ADMIN: ESETL | 2016-?</p>
+        <p>IDENTIFIED ASSET: MIA and ESTEL| ADMIN: TM 1.0 </p>
+        <p>SYSTEM ACCESS TIME: 2016- | SECURITY PROTOCOL: ACTIVE</p>
     </footer>
 
     <audio id="bgm" loop>
@@ -239,22 +321,24 @@
         const messageBoard = document.getElementById('interactive-message');
         const messageTextContainer = document.getElementById('message-text');
         
-        // 音频播放控制：点击图标切换摄像头状态
+        // 音频播放控制 (保持原有逻辑，微调图标和光晕)
         document.addEventListener('click', () => { if (bgm.paused) bgm.play(); }, { once: true });
         musicBtn.addEventListener('click', () => {
             if (bgm.paused) { 
                 bgm.play(); 
-                musicBtn.innerText = '📹'; // 播放时显示摄像头
-                musicBtn.style.boxShadow = "0 0 15px rgba(255, 105, 180, 0.6)";
+                musicBtn.innerText = '📹'; 
+                musicBtn.style.boxShadow = "0 0 20px rgba(248, 234, 43, 0.6)";
+                musicBtn.style.color = "var(--poi-accent)";
             }
             else { 
                 bgm.pause(); 
-                musicBtn.innerText = '🚫'; // 停止时显示禁用符号，更有监控关闭的感觉
+                musicBtn.innerText = '🚫'; 
                 musicBtn.style.boxShadow = "none";
+                musicBtn.style.color = "#ff3333"; // 停止时变成红色禁用
             }
         });
 
-        // 留言板互动逻辑
+        // 留言板互动逻辑 (保持原有逻辑)
         let hasActivated = false;
         messageBoard.addEventListener('click', function() {
             if (hasActivated) return;
