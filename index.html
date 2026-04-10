@@ -20,12 +20,11 @@
             background-attachment: fixed;
             background-repeat: no-repeat;
             background-color: #050505; 
-            position: relative; /* 必须加这一行，作为钥匙的基准 */
+            position: relative;
         }
         
         :root {
             --poi-accent: #f8ea2b;
-            --poi-text: #ffffff;
             --poi-bg-box: rgba(10, 10, 10, 0.85);
             --poi-border: rgba(248, 234, 43, 0.6);
         }
@@ -36,212 +35,62 @@
             background-color: var(--poi-bg-box);
             border-bottom: 2px solid var(--poi-accent);
             position: relative;
-            z-index: 10; /* 确保在钥匙之上 */
+            z-index: 10;
         }
         header::after {
             content: "SECURED CONNECTION [ TM 1.0.sys ]";
             position: absolute;
-            bottom: 5px;
-            right: 10px;
-            font-size: 0.8em;
-            color: var(--poi-accent);
-            opacity: 0.7;
+            bottom: 5px; right: 10px; font-size: 0.8em; color: var(--poi-accent); opacity: 0.7;
         }
-
         h1 { margin: 0; font-size: 2.0em; text-transform: uppercase; letter-spacing: 2px; }
         p.subtitle { font-size: 1.1em; margin-top: 10px; opacity: 0.8; letter-spacing: 1px; color: var(--poi-accent); }
 
         /* --- 3. 照片墙 --- */
         .gallery {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            padding: 50px 20px;
-            max-width: 1000px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 10;
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;
+            padding: 50px 20px; max-width: 1000px; margin: 0 auto; position: relative; z-index: 10;
         }
-        .gallery .img-wrapper {
-            position: relative;
-            max-width: 350px;
-            width: 100%;
-        }
+        .gallery .img-wrapper { position: relative; max-width: 350px; width: 100%; }
         .gallery img {
-            width: 100%;
-            height: auto;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            object-fit: cover;
-            border: 1px solid var(--poi-border);
+            width: 100%; height: auto; border-radius: 4px; transition: all 0.3s ease;
+            object-fit: cover; border: 1px solid var(--poi-border);
             box-shadow: 0 0 10px rgba(248, 234, 43, 0.2);
         }
-        
-        .gallery .img-wrapper:hover img {
-            transform: scale(1.03);
-            border: 1px solid var(--poi-accent);
-            box-shadow: 0 0 20px rgba(248, 234, 43, 0.5);
-        }
-        
-        .gallery .img-wrapper::before, .gallery .img-wrapper::after {
-            content: ""; position: absolute; width: 15px; height: 15px;
-            transition: all 0.3s; pointer-events: none; opacity: 0;
-        }
-        .gallery .img-wrapper::before { top: -5px; left: -5px; border-top: 2px solid var(--poi-accent); border-left: 2px solid var(--poi-accent); }
-        .gallery .img-wrapper::after { bottom: -5px; right: -5px; border-bottom: 2px solid var(--poi-accent); border-right: 2px solid var(--poi-accent); }
-        .gallery .img-wrapper:hover::before, .gallery .img-wrapper:hover::after { opacity: 1; transform: translate(5px, 5px); }
+        .gallery .img-wrapper:hover img { transform: scale(1.03); border: 1px solid var(--poi-accent); box-shadow: 0 0 20px rgba(248, 234, 43, 0.5); }
 
-        /* --- 4. 大横幅 --- */
-        .banner-container {
-            width: 100%;
-            max-width: 1100px;
-            margin: 20px auto;
-            padding: 0 20px;
-            box-sizing: border-box;
-            position: relative;
-            z-index: 10;
-        }
-        .banner-photo {
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 8px;
-            border: 2px solid var(--poi-border);
-            box-shadow: 0 0 15px rgba(248, 234, 43, 0.2);
-        }
-
-        /* --- 5. 留言板 --- */
+        /* --- 4. 留言板 (解密逻辑保持不变) --- */
         .message-board {
-            max-width: 750px;
-            margin: 50px auto;
-            padding: 40px;
-            background: var(--poi-bg-box);
-            border: 1px solid var(--poi-accent);
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(248, 234, 43, 0.2);
-            line-height: 1.8;
-            text-align: left;
-            position: relative;
-            cursor: pointer;
-            min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            z-index: 10;
+            max-width: 750px; margin: 50px auto; padding: 40px; background: var(--poi-bg-box);
+            border: 1px solid var(--poi-accent); border-radius: 8px; box-shadow: 0 0 20px rgba(248, 234, 43, 0.2);
+            line-height: 1.8; text-align: left; position: relative; cursor: pointer; min-height: 200px;
+            display: flex; flex-direction: column; justify-content: center; z-index: 10;
         }
-        
         .message-board::before {
             content: ">> [ ENCRYPTED ]: INPUT YOUR BIRTHDAY TO DECRYPT";
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.1em;
-            color: var(--poi-accent);
-            transition: opacity 0.5s;
-            font-weight: bold;
-            letter-spacing: 1px;
-            text-align: center;
-            width: 90%;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 1.1em; color: var(--poi-accent); font-weight: bold; width: 90%; text-align: center;
         }
         .message-board.activated::before { opacity: 0; visibility: hidden; }
-
         .message-content { opacity: 0; transition: opacity 1s; display: none; }
         .message-board.activated .message-content { opacity: 1; display: block; }
-
-        .message-content p, .message-content h2 { 
-            opacity: 0; 
-            transform: translateY(15px); 
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
+        .message-content p, .message-content h2 { opacity: 0; transform: translateY(15px); transition: opacity 0.8s ease, transform 0.8s ease; }
         .message-content .line-visible { opacity: 1; transform: translateY(0); }
         .message-content p { color: #dddddd; }
         .message-content p strong { color: var(--poi-accent); }
 
-        /* --- 6. 10张胶卷滚动 --- */
+        /* --- 5. 胶卷滚动 --- */
         .filmstrip-container {
-            width: 100%;
-            background-color: rgba(20, 20, 20, 0.9);
-            padding: 30px 0;
-            border-top: 5px dashed var(--poi-border);
-            border-bottom: 5px dashed var(--poi-border);
-            overflow: hidden;
-            margin-top: 60px;
-            position: relative;
-            z-index: 10;
+            width: 100%; background-color: rgba(20, 20, 20, 0.9); padding: 30px 0;
+            border-top: 5px dashed var(--poi-border); border-bottom: 5px dashed var(--poi-border);
+            overflow: hidden; margin-top: 60px; position: relative; z-index: 10;
         }
-        .filmstrip-track {
-            display: flex;
-            width: calc(250px * 20); 
-            animation: scrollFilm 35s linear infinite;
-        }
-        .filmstrip-track:hover { animation-play-state: paused; }
+        .filmstrip-track { display: flex; width: calc(250px * 20); animation: scrollFilm 35s linear infinite; }
+        .filmstrip-item { width: 230px; height: 155px; margin: 0 10px; border: 3px solid white; object-fit: cover; flex-shrink: 0; }
+        @keyframes scrollFilm { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-250px * 10)); } }
 
-        .filmstrip-item {
-            width: 230px;
-            height: 155px;
-            margin: 0 10px;
-            border: 3px solid white;
-            object-fit: cover;
-            flex-shrink: 0;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-        }
-
-        @keyframes scrollFilm {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(calc(-250px * 10)); }
-        }
-
-        /* --- 7. 控制按钮 --- */
-        #music-control {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 999;
-            cursor: pointer;
-            font-size: 28px;
-            background: rgba(10, 10, 10, 0.8);
-            color: var(--poi-accent);
-            padding: 12px;
-            border-radius: 4px;
-            border: 1px solid var(--poi-border);
-            box-shadow: 0 0 15px rgba(248, 234, 43, 0.3);
-            transition: all 0.3s ease;
-            width: 55px; height: 55px;
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        footer {
-            padding: 40px 20px;
-            background-color: var(--poi-bg-box);
-            color: #888888;
-            font-size: 0.8em;
-            letter-spacing: 1px;
-            border-top: 1px solid var(--poi-border);
-            position: relative;
-            z-index: 10;
-        }
-
-        /* --- 8. 核心：轻量化钥匙下坠样式 --- */
-        #key-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none; /* 确保不影响点击网页 */
-            z-index: 1; /* 在背景图和内容之间 */
-            overflow: hidden;
-        }
-
-        .falling-key {
-            position: absolute;
-            fill: var(--poi-accent); /* 钥匙颜色 */
-            opacity: 0.5;
-            filter: drop-shadow(0 0 5px rgba(248, 234, 43, 0.3));
-            animation: fallKey linear infinite;
-        }
-
+        /* --- 6. 钥匙下坠特效 --- */
+        #key-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; }
+        .falling-key { position: absolute; fill: var(--poi-accent); opacity: 0.5; animation: fallKey linear infinite; }
         @keyframes fallKey {
             0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
             10% { opacity: 0.5; }
@@ -249,10 +98,46 @@
             100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
 
+        /* --- 7. 【新增】Machine Indicator 追踪器样式 --- */
+        #machine-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100px; /* 根据你图片的大小调整 */
+            height: 100px;
+            background-image: url('indicator.png'); /* 这里放你的PNG图片 */
+            background-size: contain;
+            background-repeat: no-repeat;
+            pointer-events: none; /* 必须！防止遮挡鼠标点击 */
+            z-index: 10000; /* 永远在最顶层 */
+            transition: transform 0.15s ease-out; /* 让移动带一点平滑跟随感 */
+            filter: drop-shadow(0 0 8px rgba(248, 234, 43, 0.6));
+            /* 模拟Machine那种微微晃动的随机感 */
+            animation: machine-jitter 3s infinite ease-in-out;
+        }
+
+        @keyframes machine-jitter {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(3px, -2px) scale(1.02); }
+            50% { transform: translate(-2px, 3px) scale(0.98); }
+            75% { transform: translate(2px, 2px) scale(1.01); }
+        }
+
+        #music-control {
+            position: fixed; top: 20px; right: 20px; z-index: 999; cursor: pointer;
+            font-size: 28px; background: rgba(10, 10, 10, 0.8); color: var(--poi-accent);
+            padding: 12px; border-radius: 4px; border: 1px solid var(--poi-border);
+            width: 55px; height: 55px; display: flex; align-items: center; justify-content: center;
+        }
+
+        footer { padding: 40px 20px; background-color: var(--poi-bg-box); color: #888888; font-size: 0.8em; border-top: 1px solid var(--poi-border); position: relative; z-index: 10;}
+
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
     </style>
 </head>
 <body>
+
+    <div id="machine-indicator"></div>
 
     <div id="key-container"></div>
 
@@ -262,13 +147,11 @@
     </header>
 
     <section class="gallery">
-        <div class="img-wrapper"><img src="photo1.jpg" alt="合照1"></div>
-        <div class="img-wrapper"><img src="photo2.jpg" alt="合照2"></div>
+        <div class="img-wrapper"><img src="photo1.jpg" alt="1"></div>
+        <div class="img-wrapper"><img src="photo2.jpg" alt="2"></div>
     </section>
 
-    <div class="banner-container">
-        <img src="photo3.jpg" alt="大横幅" class="banner-photo">
-    </div>
+    <div class="banner-container"><img src="photo3.jpg" alt="banner" class="banner-photo"></div>
 
     <section class="message-board" id="interactive-message">
         <div class="message-content" id="message-text">
@@ -293,29 +176,23 @@
     </section>
 
     <footer>
-        <p>IDENTIFIED ASSET: MIA and ESTEL| ADMIN: TM 1.0 </p>
+        <p>IDENTIFIED ASSET: MIA and ESTEL | ADMIN: TM 1.0 </p>
         <p>SYSTEM ACCESS TIME: 2016- | SECURITY PROTOCOL: ACTIVE</p>
     </footer>
 
-    <audio id="bgm" loop>
-        <source src="music.mp3" type="audio/mpeg">
-    </audio>
-
+    <audio id="bgm" loop><source src="music.mp3" type="audio/mpeg"></audio>
     <div id="music-control">📹</div>
 
     <script>
         const bgm = document.getElementById('bgm');
         const musicBtn = document.getElementById('music-control');
-        const messageBoard = document.getElementById('interactive-message');
-        const messageTextContainer = document.getElementById('message-text');
-        
-        // --- 钥匙生成脚本 ---
+        const indicator = document.getElementById('machine-indicator');
+
+        // --- 1. 钥匙下坠逻辑 ---
         function createKeys() {
             const container = document.getElementById('key-container');
-            const keyCount = 20; 
             const keySVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>`;
-
-            for (let i = 0; i < keyCount; i++) {
+            for (let i = 0; i < 20; i++) {
                 const key = document.createElement('div');
                 key.classList.add('falling-key');
                 key.innerHTML = keySVG;
@@ -328,27 +205,48 @@
                 container.appendChild(key);
             }
         }
-        window.onload = createKeys;
 
-        // 原有逻辑：音乐
-        document.addEventListener('click', () => { if (bgm.paused) bgm.play(); }, { once: true });
-        musicBtn.addEventListener('click', () => {
-            if (bgm.paused) { 
-                bgm.play(); musicBtn.innerText = '📹'; musicBtn.style.boxShadow = "0 0 20px rgba(248, 234, 43, 0.6)";
-            } else { 
-                bgm.pause(); musicBtn.innerText = '🚫'; musicBtn.style.boxShadow = "none";
-            }
+        // --- 2. 【新增】Machine Indicator 鼠标追踪逻辑 ---
+        let mouseX = 0, mouseY = 0;
+        let posX = 0, posY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
 
-        // 原有逻辑：解密
+        function animateIndicator() {
+            // 平滑跟随公式：当前位置 + (目标位置 - 当前位置) * 速度
+            // 减去 50 是为了让图片的中心对准鼠标
+            posX += (mouseX - posX - 50) * 0.1;
+            posY += (mouseY - posY - 50) * 0.1;
+            
+            indicator.style.left = posX + 'px';
+            indicator.style.top = posY + 'px';
+            
+            requestAnimationFrame(animateIndicator);
+        }
+
+        window.onload = () => {
+            createKeys();
+            animateIndicator();
+        };
+
+        // --- 3. 音乐与解密逻辑 ---
+        document.addEventListener('click', () => { if (bgm.paused) bgm.play(); }, { once: true });
+        musicBtn.addEventListener('click', () => {
+            if (bgm.paused) { bgm.play(); musicBtn.innerText = '📹'; }
+            else { bgm.pause(); musicBtn.innerText = '🚫'; }
+        });
+
         let hasActivated = false;
-        messageBoard.addEventListener('click', function() {
+        document.getElementById('interactive-message').addEventListener('click', function() {
             if (hasActivated) return;
             const userInput = prompt(">> SECURITY CHECK: INPUT YOUR BIRTHDAY (YYYYMMDD)");
             if (userInput === "19990622") {
                 hasActivated = true;
                 this.classList.add('activated');
-                const elements = messageTextContainer.querySelectorAll('h2, p');
+                const elements = document.getElementById('message-text').querySelectorAll('h2, p');
                 elements.forEach((el, index) => {
                     setTimeout(() => { el.classList.add('line-visible'); }, index * 800); 
                 });
