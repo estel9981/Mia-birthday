@@ -58,7 +58,7 @@
         }
         .gallery .img-wrapper:hover img { transform: scale(1.03); border: 1px solid var(--poi-accent); box-shadow: 0 0 20px rgba(248, 234, 43, 0.5); }
 
-        /* --- 4. 留言板 (解密逻辑保持不变) --- */
+        /* --- 4. 留言板 --- */
         .message-board {
             max-width: 750px; margin: 50px auto; padding: 40px; background: var(--poi-bg-box);
             border: 1px solid var(--poi-accent); border-radius: 8px; box-shadow: 0 0 20px rgba(248, 234, 43, 0.2);
@@ -98,24 +98,14 @@
             100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
 
-        /* --- 7. 【新增】Machine Indicator 追踪器样式 --- */
+        /* --- 7. Machine Indicator 追踪器 --- */
         #machine-indicator {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100px; /* 根据你图片的大小调整 */
-            height: 100px;
-            background-image: url('indicator.png'); /* 这里放你的PNG图片 */
-            background-size: contain;
-            background-repeat: no-repeat;
-            pointer-events: none; /* 必须！防止遮挡鼠标点击 */
-            z-index: 10000; /* 永远在最顶层 */
-            transition: transform 0.15s ease-out; /* 让移动带一点平滑跟随感 */
+            position: fixed; top: 0; left: 0; width: 100px; height: 100px;
+            background-image: url('indicator.png'); background-size: contain; background-repeat: no-repeat;
+            pointer-events: none; z-index: 10000; transition: transform 0.15s ease-out;
             filter: drop-shadow(0 0 8px rgba(248, 234, 43, 0.6));
-            /* 模拟Machine那种微微晃动的随机感 */
             animation: machine-jitter 3s infinite ease-in-out;
         }
-
         @keyframes machine-jitter {
             0%, 100% { transform: translate(0, 0) scale(1); }
             25% { transform: translate(3px, -2px) scale(1.02); }
@@ -123,6 +113,7 @@
             75% { transform: translate(2px, 2px) scale(1.01); }
         }
 
+        /* --- 8. 音乐控制 --- */
         #music-control {
             position: fixed; top: 20px; right: 20px; z-index: 999; cursor: pointer;
             font-size: 28px; background: rgba(10, 10, 10, 0.8); color: var(--poi-accent);
@@ -132,13 +123,44 @@
 
         footer { padding: 40px 20px; background-color: var(--poi-bg-box); color: #888888; font-size: 0.8em; border-top: 1px solid var(--poi-border); position: relative; z-index: 10;}
 
+        /* --- 9. Photo3 Banner 原始样式 --- */
+        .banner-container {
+            width: 100%; max-width: 1100px; margin: 20px auto; padding: 0 20px;
+            box-sizing: border-box; position: relative; z-index: 10;
+        }
+        .banner-photo {
+            width: 100%; height: auto; display: block; border-radius: 8px;
+            border: 2px solid var(--poi-border); box-shadow: 0 0 15px rgba(248, 234, 43, 0.2);
+        }
+
+        /* --- 10. 【核心修复】手机端响应式微调 --- */
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.5em; }
+            .banner-container {
+                padding: 0 10px; /* 减小两侧边距，让Banner在手机上更大 */
+                margin: 10px auto;
+            }
+            .banner-photo {
+                border-radius: 4px; /* 手机端小圆角更规整 */
+            }
+            .message-board {
+                margin: 30px 15px; /* 留言板不要贴着手机边框 */
+                padding: 25px 20px;
+            }
+            .message-board::before {
+                font-size: 0.9em; /* 调整加密文字大小以防换行溢出 */
+            }
+            #machine-indicator {
+                width: 70px; height: 70px; /* 手机端追踪框缩小一点，以免挡住内容 */
+            }
+        }
+
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
     </style>
 </head>
 <body>
 
     <div id="machine-indicator"></div>
-
     <div id="key-container"></div>
 
     <header>
@@ -151,7 +173,9 @@
         <div class="img-wrapper"><img src="photo2.jpg" alt="2"></div>
     </section>
 
-    <div class="banner-container"><img src="photo3.jpg" alt="banner" class="banner-photo"></div>
+    <div class="banner-container">
+        <img src="photo3.jpg" alt="banner" class="banner-photo">
+    </div>
 
     <section class="message-board" id="interactive-message">
         <div class="message-content" id="message-text">
@@ -188,7 +212,6 @@
         const musicBtn = document.getElementById('music-control');
         const indicator = document.getElementById('machine-indicator');
 
-        // --- 1. 钥匙下坠逻辑 ---
         function createKeys() {
             const container = document.getElementById('key-container');
             const keySVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>`;
@@ -206,24 +229,23 @@
             }
         }
 
-        // --- 2. 【新增】Machine Indicator 鼠标追踪逻辑 ---
         let mouseX = 0, mouseY = 0;
         let posX = 0, posY = 0;
 
         document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
+            mouseX = e.clientX; mouseY = e.clientY;
+        });
+        // 增加对移动端的触摸支持
+        document.addEventListener('touchmove', (e) => {
+            mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY;
         });
 
         function animateIndicator() {
-            // 平滑跟随公式：当前位置 + (目标位置 - 当前位置) * 速度
-            // 减去 50 是为了让图片的中心对准鼠标
-            posX += (mouseX - posX - 50) * 0.1;
-            posY += (mouseY - posY - 50) * 0.1;
-            
+            let offset = window.innerWidth < 768 ? 35 : 50; // 根据手机端大小调整中心点偏移
+            posX += (mouseX - posX - offset) * 0.1;
+            posY += (mouseY - posY - offset) * 0.1;
             indicator.style.left = posX + 'px';
             indicator.style.top = posY + 'px';
-            
             requestAnimationFrame(animateIndicator);
         }
 
@@ -232,7 +254,6 @@
             animateIndicator();
         };
 
-        // --- 3. 音乐与解密逻辑 ---
         document.addEventListener('click', () => { if (bgm.paused) bgm.play(); }, { once: true });
         musicBtn.addEventListener('click', () => {
             if (bgm.paused) { bgm.play(); musicBtn.innerText = '📹'; }
